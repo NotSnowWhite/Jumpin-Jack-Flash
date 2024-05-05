@@ -42,5 +42,5 @@ async function init() {
 })();
 
 app.listen(PORT, () => {
-    console.log(`Listening on port http://www.localhost:${PORT}`)
+    console.log(`Listening on port http://localhost:${PORT}`)
 })
