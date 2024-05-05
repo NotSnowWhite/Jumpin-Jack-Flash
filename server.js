@@ -1,12 +1,5 @@
-const express = require('express');
 const inquirer = require('inquirer');
 const pool = require('./connection/connection');
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 async function init() {
     try {
@@ -26,7 +19,7 @@ async function init() {
                 ]
             },
 
-        ]); init()
+        ]); 
     } catch (err) {
         console.error("An error has occurred", err)
     }
@@ -36,11 +29,8 @@ async function init() {
     try {
         await pool.connect();
         console.log('Connection to the database was successful!')
+        init()
     } catch (error) {
         console.error(error)
     }
 })();
-
-app.listen(PORT, () => {
-    console.log(`Listening on port http://localhost:${PORT}`)
-})
