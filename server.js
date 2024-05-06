@@ -93,9 +93,8 @@ async function init() {
                             }
                         ])
                         const { roleName, salary, department } = newRole;
-                        // const departmentId = parseInt(department);
 
-                        const result = await pool.query(`INSERT INTO roles (title, salary, department_id)
+                        await pool.query(`INSERT INTO roles (title, salary, department_id)
                         VALUES ($1, $2, $3)`, [roleName, salary, department]);
                         const role = await pool.query(`SELECT * FROM roles`);
                         console.table(role.rows)
@@ -106,7 +105,41 @@ async function init() {
                 })();
                 break;
             case 'Add an employee':
+                (async () => {
+                    try {
+                        const newEmployee = await inquirer.prompt([
+                            {
+                                name: 'firstName',
+                                type: 'input',
+                                message: 'What is the employee\'s first name?'
+                            },
+                            {
+                                name: 'lastName',
+                                type: 'input',
+                                message: 'What is the employee\'s last name?'
+                            },
+                            {
+                                name: 'role_id',
+                                type: 'input',
+                                message: 'What is the employee\'s role id?'
+                            },
+                            {
+                                name: 'manager_id',
+                                type: 'input',
+                                message: 'What is the manager\'s id for the new employee?'
+                            }
+                        ])
+                        const { firstName, lastName, role_id, manager_id } = newEmployee;
 
+                        await pool.query(`INSERT INTO employee (firstName, lastName, role_id, manager_id)
+                        VALUES ($1, $2, $3, $4)`, [firstName, lastName, role_id, manager_id]);
+                        const employee = await pool.query(`SELECT * FROM employee`);
+                        console.table(employee.rows)
+
+                    } catch (err) {
+                        console.error(err)
+                    }
+                })();
                 break;
             case 'Update an employee role':
 
@@ -131,8 +164,5 @@ async function init() {
         await init()
     } catch (err) {
         console.error(err)
-    } //finally {
-    //     await pool.end()
-    //     console.log('The connection has been severed. Goodbye.')
-    // }
+    } 
 })();
