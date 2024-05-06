@@ -60,7 +60,6 @@ async function init() {
                 })
                 break;
             case 'Add a department':
-                (async () => {
                     try {
                         const deptName = await inquirer.prompt([
                             {
@@ -83,10 +82,8 @@ async function init() {
                     } catch (err) {
                         console.error(err)
                     }
-                })();
                 break;
             case 'Add a role':
-                (async () => {
                     try {
                         const newRole = await inquirer.prompt([
                             {
@@ -118,10 +115,8 @@ async function init() {
                     } catch (err) {
                         console.error(err)
                     }
-                })();
                 break;
             case 'Add an employee':
-                (async () => {
                     try {
                         const newEmployee = await inquirer.prompt([
                             {
@@ -158,10 +153,8 @@ async function init() {
                     } catch (err) {
                         console.error(err)
                     }
-                })();
                 break;
             case 'Update an employee role':
-                (async () => {
                     try {
                         const employees = await pool.query('SELECT id, first_name, last_name, role_id FROM employee');
                         const employeeInfo = employees.rows.map(person => ({ value: person.id, name: `${person.first_name} ${person.last_name}`, role: person.role_id }));
@@ -177,14 +170,36 @@ async function init() {
                         const selectedEmployee = employeeInfo.find(employee => employee.value === updateRole.employeeRole);
                         const roleIdToUpdate = selectedEmployee.role;
 
-                        await pool.query('SELECT title, salary, department_id FROM roles WHERE id = $1', [roleIdToUpdate]);
+                        const newRoleInfo = await inquirer.prompt([
+                            {
+                                name: 'title',
+                                type: 'input',
+                                message: 'Enter the employee\'s new role title:',
+                            },
+                            {
+                                name: 'salary',
+                                type: 'input',
+                                message: 'Enter the employee\'s new role salary:',
+                            },
+                            {
+                                name: 'department_id',
+                                type: 'input',
+                                message: 'Enter the employee\'s new role department ID:',
+                            },
+                        ]);
+
                         await pool.query('UPDATE employee SET role_id = $1 WHERE id = $2', [roleIdToUpdate, selectedEmployee.value]);
+                        await pool.query('UPDATE roles SET title = $1, salary = $2, department_id = $3 WHERE id = $4', [
+                            newRoleInfo.title,
+                            newRoleInfo.salary,
+                            newRoleInfo.department_id,
+                            roleIdToUpdate,
+                        ]);
                         console.log('Employee role updated successfully.');
                         init()
                     } catch (err) {
                         console.error(err, "Problem updating employee role.")
                     }
-                })
                 break;
             case 'Exit':
                 try {
