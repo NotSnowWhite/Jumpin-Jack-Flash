@@ -11,7 +11,7 @@ The purpose of this project is to track relevant employee and department data us
   
   My motivation: My motivation was to have a functioning CRM to better understand how to use databases and what a CRM is.
   
-  My reason for creating this: To engage my mind and gain a better grasp on node, packages, and espescially SQL; to learn.
+  My reason for creating this: To engage my mind and gain a better grasp on node, packages, and especially SQL; to learn.
   
 ### Contact me
   
@@ -43,7 +43,7 @@ The purpose of this project is to track relevant employee and department data us
   
 ## Contributing
   
-  - [](https://)
+  - [Bryan Swarthout](https://github.com/bryanswarthout)
 
 
   
