@@ -35,7 +35,9 @@ The purpose of this project is to track relevant employee and department data us
   
   
 
-  ![alt text](assets/images/'placeImageHere'.png)
+  ![Walkthrough video](assets/Untitled_%20May-6,%202024-2_50-PM.gif)
+  
+  [Walkthrough video](https://watch.screencastify.com/v/KHW5i8KceuqZOcBWJyxT)
 
 ## License
   
