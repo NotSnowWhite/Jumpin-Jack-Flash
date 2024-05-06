@@ -48,6 +48,8 @@ async function init() {
                     if (err) {
                         console.error(err)
                     }
+                    console.log('\n')
+
                     console.table(result.rows)
                     console.log('\n')
                     init();
