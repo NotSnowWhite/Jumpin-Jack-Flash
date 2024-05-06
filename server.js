@@ -7,7 +7,7 @@ async function init() {
             {
                 type: 'list',
                 name: 'option',
-                message: 'What would you like to do?',
+                message: `What would you like to do?\n`,
                 choices: [
                     'View all departments',
                     'View all roles',
@@ -33,7 +33,7 @@ async function init() {
                 })
                 break;
             case 'View all roles':
-                pool.query(`SELECT * FROM role`, (err, result) => {
+                pool.query(`SELECT * FROM roles`, (err, result) => {
                     if (err) {
                         console.error(err)
                     }
@@ -48,7 +48,7 @@ async function init() {
                     if (err) {
                         console.error(err)
                     }
-                    console.table(result.rows)  
+                    console.table(result.rows)
                     console.log('\n')
                     init();
                 })
@@ -69,16 +69,15 @@ async function init() {
                         await pool.query(`INSERT INTO department (name)
                         VALUES ($1)`, [departmentName]);
 
-                        const department = await pool.query(`SELECT * FROM departments`);
+                        const department = await pool.query(`SELECT * FROM department`);
                         console.table(department.rows)
                         console.log('A new department has been created!')
-                        init();
+                        console.log('\n')
+                        init()
                     } catch (err) {
                         console.error(err)
-
                     }
                 })();
-
                 break;
             case 'Add a role':
                 (async () => {
@@ -106,7 +105,8 @@ async function init() {
                         VALUES ($1, $2, $3)`, [roleName, salary, department]);
                         const role = await pool.query(`SELECT * FROM roles`);
                         console.table(role.rows)
-                        init();
+                        console.log('\n')
+                        init()
                     } catch (err) {
                         console.error(err)
                     }
@@ -139,11 +139,12 @@ async function init() {
                         ])
                         const { firstName, lastName, role_id, manager_id } = newEmployee;
 
-                        await pool.query(`INSERT INTO employee (firstName, lastName, role_id, manager_id)
+                        await pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
                         VALUES ($1, $2, $3, $4)`, [firstName, lastName, role_id, manager_id]);
                         const employee = await pool.query(`SELECT * FROM employee`);
                         console.table(employee.rows)
-                        init();
+                        console.log('\n')
+                        init()
                     } catch (err) {
                         console.error(err)
                     }
@@ -153,18 +154,17 @@ async function init() {
 
                 break;
             case 'Exit':
-                pool.end((err) => { //close connection to database
-                    if (err) {
-                        console.error(err, "Problem exiting the database.");
-                    } else {
+                try {
                     console.log('The connection has been severed. Goodbye.');
-                    process.exit(0); //end nodejs process
-                    }
-                })
+                    process.exit(0); //end nodejs process and close the connection with success
+                } catch (err) {
+                    console.error(err, "Problem exiting the database.");
+                }
 
                 break;
             default:
                 console.log('Invalid option. Try again.');
+                console.log('\n')
                 init();
                 break;
         }
