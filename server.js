@@ -75,7 +75,7 @@ async function init() {
                         VALUES ($1)`, [departmentName]);
 
                         const department = await pool.query(`SELECT * FROM department`);
-                    console.log('\n')
+                        console.log('\n')
                         console.table(department.rows)
                         console.log('A new department has been created!')
                         console.log('\n')
@@ -110,7 +110,7 @@ async function init() {
                         await pool.query(`INSERT INTO roles (title, salary, department_id)
                         VALUES ($1, $2, $3)`, [roleName, salary, department]);
                         const role = await pool.query(`SELECT * FROM roles`);
-                    console.log('\n')
+                        console.log('\n')
 
                         console.table(role.rows)
                         console.log('\n')
@@ -150,7 +150,7 @@ async function init() {
                         await pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
                         VALUES ($1, $2, $3, $4)`, [firstName, lastName, role_id, manager_id]);
                         const employee = await pool.query(`SELECT * FROM employee`);
-                    console.log('\n')
+                        console.log('\n')
 
                         console.table(employee.rows)
                         console.log('\n')
@@ -161,7 +161,30 @@ async function init() {
                 })();
                 break;
             case 'Update an employee role':
+                (async () => {
+                    try {
+                        const employees = await pool.query('SELECT id, first_name, last_name, role_id FROM employee');
+                        const employeeInfo = employees.rows.map(person => ({ value: person.id, name: `${person.first_name} ${person.last_name}`, role: person.role_id }));
 
+                        const updateRole = await inquirer.prompt([
+                            {
+                                name: 'employeeRole',
+                                type: 'list',
+                                message: 'Which employee\'s role do you want to update?',
+                                choices: employeeInfo,
+                            }
+                        ])
+                        const selectedEmployee = employeeInfo.find(employee => employee.value === updateRole.employeeRole);
+                        const roleIdToUpdate = selectedEmployee.role;
+
+                        await pool.query('SELECT title, salary, department_id FROM roles WHERE id = $1', [roleIdToUpdate]);
+                        await pool.query('UPDATE employee SET role_id = $1 WHERE id = $2', [roleIdToUpdate, selectedEmployee.value]);
+                        console.log('Employee role updated successfully.');
+                        init()
+                    } catch (err) {
+                        console.error(err, "Problem updating employee role.")
+                    }
+                })
                 break;
             case 'Exit':
                 try {
