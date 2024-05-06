@@ -7,7 +7,7 @@ async function init() {
             {
                 type: 'list',
                 name: 'option',
-                message: `What would you like to do?\n`,
+                message: `What would you like to do? \n`,
                 choices: [
                     'View all departments',
                     'View all roles',
