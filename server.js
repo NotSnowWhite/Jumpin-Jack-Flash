@@ -26,6 +26,8 @@ async function init() {
                     if (err) {
                         console.error(err)
                     }
+                    console.log('\n')
+
                     console.table(result.rows)
                     console.log('\n')
                     init();
@@ -37,6 +39,8 @@ async function init() {
                     if (err) {
                         console.error(err)
                     }
+                    console.log('\n')
+
                     console.table(result.rows)
                     console.log('\n')
                     init();
@@ -54,7 +58,6 @@ async function init() {
                     console.log('\n')
                     init();
                 })
-                init();
                 break;
             case 'Add a department':
                 (async () => {
@@ -72,6 +75,7 @@ async function init() {
                         VALUES ($1)`, [departmentName]);
 
                         const department = await pool.query(`SELECT * FROM department`);
+                    console.log('\n')
                         console.table(department.rows)
                         console.log('A new department has been created!')
                         console.log('\n')
@@ -106,6 +110,8 @@ async function init() {
                         await pool.query(`INSERT INTO roles (title, salary, department_id)
                         VALUES ($1, $2, $3)`, [roleName, salary, department]);
                         const role = await pool.query(`SELECT * FROM roles`);
+                    console.log('\n')
+
                         console.table(role.rows)
                         console.log('\n')
                         init()
@@ -144,6 +150,8 @@ async function init() {
                         await pool.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
                         VALUES ($1, $2, $3, $4)`, [firstName, lastName, role_id, manager_id]);
                         const employee = await pool.query(`SELECT * FROM employee`);
+                    console.log('\n')
+
                         console.table(employee.rows)
                         console.log('\n')
                         init()
